@@ -14,7 +14,11 @@ app.use(express.json()); // обязательно, чтобы читать JSON
 app.use(express.static(path.resolve("../frontend/dist")));
 
 app.get("/", (req, res) => {
-  res.sendFile(path.resolve("../frontend/index.html"));
+  res.sendFile(path.resolve("index.html"));
+});
+
+app.post("/api/v1/zakaz", (req, res) => {
+  const { name, value } = req.body;
 });
 
 app.listen(PORT, "localhost", () => {

@@ -18,9 +18,7 @@
         </a>
         <ul class="nav-menu" id="navMenu">
           <li class="nav-item">
-            <a href="#services" class="nav-link">
-              <i class="fas fa-list"></i>Услуги
-            </a>
+            <a href="#" class="nav-link"> <i class="fas fa-list"></i>Услуги </a>
             <ul class="submenu">
               <li>
                 <a href="#install" class="submenu-link"
@@ -90,7 +88,6 @@
 
     <!-- HERO SECTION -->
     <section class="hero">
-      <div class="item hero-image"></div>
       <div class="item hero-title">
         <h1>Мастер на час в Якутске</h1>
         <p class="hero-subtitle">Служба бытового сервиса⭐</p>
@@ -123,10 +120,7 @@
           ><i class="fa-solid fa-door-open"></i>Ремонт и установка дверей</span
         >
         <span><i class="fa-solid fa-couch"></i>Ремонт мебели</span>
-        <span
-          ><i class="fa-brands fa-microsoft"></i>Распил материала по
-          размерам</span
-        >
+
         <span><i class="fa-solid fa-wrench"></i>Сантехника</span>
       </div>
     </section>
@@ -226,6 +220,29 @@
       </div>
     </section>
 
+    <!-- EXAMPLES SLIDER-->
+    <section class="section" id="map">
+      <div class="container">
+        <h2 class="section-title">Примеры работ</h2>
+        <div class="example-slider">
+          <button class="slider-btn prev" aria-label="Предыдущий">❮</button>
+          <button class="slider-btn next" aria-label="Следующий">❯</button>
+          <div class="slide">
+            <img src="./assets/images/1.jpg" alt="Пример 2" />
+          </div>
+          <div class="slide">
+            <img src="./assets/images/1.jpg" alt="Пример 2" />
+          </div>
+          <div class="slide">
+            <img src="./assets/images/2.jpg" alt="Пример 2" />
+          </div>
+          <div class="slide">
+            <img src="./assets/images/2.jpg" alt="Пример 2" />
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- CONTACTS -->
     <section class="section" id="contacts">
       <div class="container">
@@ -238,7 +255,7 @@
             <div>
               <strong>Якутск, 9 бокс</strong><br />
               Гимеин м-н, Сайсарский округ<br />
-              677010 [attached_file:1]
+              677010
             </div>
           </div>
           <div class="contact-item">
@@ -289,25 +306,88 @@
             <span style="color: #059669; font-size: 1.2rem"
               >Ежедневно 08:00 - 22:00</span
             >
-            [attached_file:1]
           </div>
         </div>
       </div>
     </section>
 
-    <!-- MAP -->
-    <section class="section" id="map">
+    <!--FORM-->
+    <section class="section" id="form">
       <div class="container">
-        <h2 class="section-title">Где мы находимся</h2>
-        <div class="map-container">
-          <iframe
-            src="https://2gis.ru/embed/map?query=Мастер+на+час+Якутск+9+бокс+Гимеин&ml=129.744674,62.092484&z=15"
-            width="100%"
-            height="100%"
-            allowfullscreen
-            style="border: none"
-          >
-          </iframe>
+        <h2 class="section-title">Заказать мастера</h2>
+
+        <form
+          id="mars-once"
+          action="/apply/"
+          method="POST"
+          class="contact-form"
+        >
+          <label>
+            Ваше имя:
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Илон Маск"
+              required
+            />
+          </label>
+
+          <label>
+            Адрес:
+            <input
+              type="text"
+              id="address"
+              name="address"
+              placeholder="Адрес (улица, дом)"
+            />
+          </label>
+
+          <label>
+            Телефон:
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="+7 (___) ___-__-__"
+              required
+            />
+          </label>
+
+          <label>
+            Причина:
+            <select name="specialization" required>
+              <option value="mebel" selected>Мебель</option>
+              <option value="kuhnya">Кухня</option>
+              <option value="vanna">Ванна</option>
+              <option value="dver">Дверь</option>
+            </select>
+          </label>
+
+          <label>
+            Описание проблемы
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              placeholder="Что нужно сделать? (сантехника, электрика, сборка мебели...)"
+            ></textarea>
+          </label>
+
+          <label>
+            <input type="checkbox" name="agree" required />
+            <span class="checkmark"></span>
+            Согласен с
+            <a href="#" target="_blank">условиями обработки данных</a>
+          </label>
+
+          <button type="submit">Отправить заявку</button>
+        </form>
+
+        <div class="form-success" id="formSuccess">
+          <i class="fas fa-check-circle"></i>
+          <h3>Заявка отправлена!</h3>
+          <p>Мастер свяжется с вами в течение 10 минут</p>
         </div>
       </div>
     </section>
@@ -320,7 +400,7 @@
           Якутск • Все права защищены
         </p>
         <p style="opacity: 0.6; font-size: 0.9rem">
-          Данные из 2ГИС • Выезд по всему городу [web:2][attached_file:1]
+          Данные из 2ГИС • Выезд по всему городу
         </p>
       </div>
     </footer>
@@ -391,5 +471,6 @@
       src="https://kit.fontawesome.com/3ad00e6e45.js"
       crossorigin="anonymous"
     ></script>
+    <script src="./src/main.js"></script>
   </body>
 </html>

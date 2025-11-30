@@ -250,14 +250,14 @@ body {
 
 /* HERO */
 .hero {
-  min-height: 90vh;
+  min-height: 100vh;
   width: 100%;
   overflow: hidden; /* на всякий случай, чтобы ничего не вылезало */
   display: grid; /* грид-контейнер */
   /* Будет создано 3 колонки */
   grid-template-columns: [start] 1fr [line2] 2fr [line3] 1fr [end];
   /* Будет создано 5 ряда */
-  grid-template-rows: [row-start] auto [row1] 2fr [row-end];
+  grid-template-rows: [row-start] 1fr [row-end];
   background: radial-gradient(
       circle at 20% 80%,
       rgba(120, 119, 198, 0.3) 0%,
@@ -269,6 +269,16 @@ body {
       transparent 50%
     ),
     var(--secondary-gradient);
+}
+
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: [start] 1fr [end];
+    grid-template-rows: [row-start] 1fr [row1] 1fr [row2] 1fr [row-end];
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+  }
 }
 
 .hero::before {
@@ -292,18 +302,35 @@ body {
 .hero::after {
   content: "";
   position: absolute;
-  width: 60vw;
-  max-width: 60vw;
-  min-height: 60vh;
-  bottom: minmax(37px, 60px);
-  left: 50%;
-  transform: translateX(-50%) translateY(20px); /* ← сдвиг */
+  width: 100%;
+  height: 100%;
+  top: 80px;
+  left: 0;
+  bottom: 0;
   background-image: url("../../assets/images/heroman.png");
-  background-size: cover; /* адаптивно, не вылезает */
-  background-position: bottom right; /* позиция картинки */
+  background-size: cover;
   background-repeat: no-repeat;
-  opacity: 0.85; /* прозрачность для наложения */
-  z-index: 1; /* выше градиентов, но ниже контента */
+  background-position: center bottom; /* прижать к низу */
+  opacity: 0.85;
+  z-index: 0;
+}
+
+@media (max-width: 768px) {
+  .hero::after {
+    position: absolute;
+    top: auto; /* убрать верхний отступ */
+    bottom: 0;
+    z-index: -1;
+  }
+}
+
+@media (max-width: 1012px) {
+  .hero::after {
+    position: absolute;
+    top: 125px; /* убрать верхний отступ */
+    bottom: 0;
+    z-index: 0;
+  }
 }
 
 @keyframes float {
@@ -325,25 +352,31 @@ body {
   z-index: 2;
 }
 
-.hero-image {
-  grid-column-start: line2;
-  grid-column-end: line3;
-  grid-row-start: row1;
-  grid-row-end: row-end;
-}
-
 .hero-title {
-  margin-top: 2rem;
   grid-column-start: line2;
   grid-column-end: line3;
   grid-row-start: row-start;
-  grid-row-end: row1;
+  grid-row-end: row-end;
   justify-self: center;
+  align-self: center;
   text-align: center;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    grid-column-start: start;
+    grid-column-end: end;
+    grid-row-start: row-start;
+    grid-row-end: row1;
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+  }
 }
 
 .hero-subtitle {
   font-size: clamp(1.2rem, 3vw, 1.5rem);
+  color: #fff;
   margin-bottom: 3rem;
   opacity: 0.95;
   font-weight: 400;
@@ -361,19 +394,45 @@ body {
 .hero-lefttext {
   grid-column-start: start;
   grid-column-end: line2;
-  grid-row-start: row1;
+  grid-row-start: row-start;
   grid-row-end: row-end;
-  justify-self: end;
+  justify-self: center;
   align-self: center;
+  padding: 1rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .hero-lefttext {
+    grid-column-start: start;
+    grid-column-end: end;
+    grid-row-start: row1;
+    grid-row-end: row2;
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+  }
 }
 
 .hero-righttext {
   grid-column-start: line3;
   grid-column-end: end;
-  grid-row-start: row1;
+  grid-row-start: row-start;
   grid-row-end: row-end;
-  justify-self: start;
+  justify-self: center;
   align-self: center;
+  padding: 1rem 2rem;
+}
+
+@media (max-width: 768px) {
+  .hero-righttext {
+    grid-column-start: start;
+    grid-column-end: end;
+    grid-row-start: row2;
+    grid-row-end: row-end;
+    justify-self: center;
+    align-self: center;
+    text-align: center;
+  }
 }
 
 .hero-lefttext > span {
@@ -385,6 +444,7 @@ body {
   font-size: clamp(1.2rem, 3vw, 1.5rem);
   text-align: center;
   opacity: 0.95;
+  color: #fff;
 }
 
 .hero-righttext > span {
@@ -396,6 +456,7 @@ body {
   font-size: clamp(1.2rem, 3vw, 1.5rem);
   text-align: center;
   opacity: 0.95;
+  color: #fff;
 }
 
 .hero-lefttext span {
@@ -583,7 +644,7 @@ body {
 .contact-item {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: start;
   gap: 1.5rem;
   margin-bottom: 2rem;
   font-size: 1.2rem;
@@ -602,13 +663,55 @@ body {
   box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
-/* Map */
-.map-container {
-  border-radius: 24px;
-  overflow: hidden;
-  box-shadow: var(--shadow-hover);
-  height: 450px;
-  margin-top: 2rem;
+/* EXAMPLES SLIDER */
+.example-slider {
+  display: flex;
+  flex-direction: row;
+  max-width: 100%;
+  height: 400px;
+  gap: 1rem;
+  position: relative;
+}
+
+.slide {
+  min-width: 40%;
+  height: 100%;
+  background-color: #000;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.slider-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.slider-btn:hover {
+  background: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.prev {
+  left: 20px;
+}
+.next {
+  right: 20px;
 }
 
 /* Footer */
@@ -721,5 +824,242 @@ footer {
 
   .container {
     padding: 0 1rem;
+  }
+}
+
+/* Современные стили для формы #mars-once
+
+/* Контейнер формы */
+#mars-once {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 24px;
+  box-shadow: var(--shadow-light);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mars-once:hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-4px);
+}
+
+/* Общие стили для label */
+#mars-once label {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  cursor: pointer;
+}
+
+/* Стили для всех input, select, textarea */
+#mars-once input,
+#mars-once select,
+#mars-once textarea {
+  margin-top: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background: rgba(248, 250, 252, 0.8);
+  backdrop-filter: blur(12px);
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  color: var(--text-dark);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+#mars-once input::placeholder,
+#mars-once textarea::placeholder {
+  color: rgba(100, 116, 139, 0.6);
+}
+
+/* Фокус и hover состояния */
+#mars-once input:focus,
+#mars-once select:focus,
+#mars-once textarea:focus {
+  border-color: #ff6a00;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.1), var(--shadow-light);
+  transform: translateY(-2px);
+}
+
+#mars-once input:hover,
+#mars-once select:hover,
+#mars-once textarea:hover {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(255, 106, 0, 0.2);
+}
+
+/* Специфичные стили */
+#mars-once input[type="tel"] {
+  font-family: "SF Mono", "Roboto Mono", monospace;
+  letter-spacing: 0.05em;
+}
+
+#mars-once select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 1rem center;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  padding-right: 3rem;
+  cursor: pointer;
+}
+
+#mars-once textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* Кастомный чекбокс */
+#mars-once label:last-of-type {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+#mars-once input[type="checkbox"] {
+  display: none;
+}
+
+#mars-once .checkmark {
+  width: 22px;
+  height: 22px;
+  border: 2px solid rgba(255, 106, 0, 0.3);
+  border-radius: 8px;
+  position: relative;
+  flex-shrink: 0;
+  margin-top: 0.125rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#mars-once input[type="checkbox"]:checked + .checkmark {
+  background: var(--primary-gradient);
+  border-color: var(--primary-gradient);
+  animation: checkmarkPulse 0.4s ease;
+}
+
+#mars-once input[type="checkbox"]:checked + .checkmark::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  width: 6px;
+  height: 11px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+}
+
+@keyframes checkmarkPulse {
+  0% {
+    transform: scale(0.8);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Ссылка в чекбоксе */
+#mars-once a {
+  color: #ff6a00;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#mars-once a:hover {
+  text-decoration: underline;
+}
+
+/* Кнопка отправки */
+#mars-once button {
+  margin-top: 1rem;
+  padding: 1.5rem 3rem;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-family: "Inter", sans-serif;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px rgba(255, 106, 0, 0.4);
+}
+
+#mars-once button:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(255, 106, 0, 0.5);
+}
+
+#mars-once button:active {
+  transform: translateY(-2px) scale(1);
+}
+
+#mars-once button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s;
+}
+
+#mars-once button:hover::before {
+  left: 100%;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  #mars-once {
+    margin: 0 1rem;
+    padding: 2.5rem 2rem;
+  }
+
+  #mars-once label {
+    font-size: 1rem;
+  }
+
+  #mars-once button {
+    padding: 1.25rem 2.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  #mars-once {
+    padding: 2rem 1.5rem;
+  }
+
+  #mars-once input,
+  #mars-once select,
+  #mars-once textarea {
+    padding: 1rem 1.25rem;
+    font-size: 0.95rem;
   }
 }
