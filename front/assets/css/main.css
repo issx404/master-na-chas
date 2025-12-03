@@ -1,7 +1,7 @@
 @font-face {
   font-family: "Nunito";
-  src: url("../../assets/fonts/Nunito-Regular.woff2") format("woff2"),
-    url("../../assets/fonts/Nunito-Regular.woff") format("woff");
+  src: url("../fonts/Nunito-Regular.woff2") format("woff2"),
+    url("../fonts/Nunito-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap; /* очень важно — шрифт не блокирует рендер */
@@ -9,8 +9,8 @@
 
 @font-face {
   font-family: "Nunito";
-  src: url("../../assets/fonts/Nunito-SemiBold.woff2") format("woff2"),
-    url("../../assets/fonts/Nunito-SemiBold.woff") format("woff");
+  src: url("../fonts/Nunito-SemiBold.woff2") format("woff2"),
+    url("../fonts/Nunito-SemiBold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -18,8 +18,8 @@
 
 @font-face {
   font-family: "Nunito";
-  src: url("../../assets/fonts/Nunito-Bold.woff2") format("woff2"),
-    url("../../assets/fonts/Nunito-Bold.woff") format("woff");
+  src: url("../fonts/Nunito-Bold.woff2") format("woff2"),
+    url("../fonts/Nunito-Bold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -28,8 +28,8 @@
 /* Italic */
 @font-face {
   font-family: "Nunito";
-  src: url("../../assets/fonts/Nunito-Italic.woff2") format("woff2"),
-    url("../../assets/fonts/Nunito-Italic.woff") format("woff");
+  src: url("../fonts/Nunito-Italic.woff2") format("woff2"),
+    url("../fonts/Nunito-Italic.woff") format("woff");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -37,8 +37,8 @@
 
 @font-face {
   font-family: "Nunito";
-  src: url("../../assets/fonts/Nunito-BoldItalic.woff2") format("woff2"),
-    url("../../assets/fonts/Nunito-BoldItalic.woff") format("woff");
+  src: url("../fonts/Nunito-BoldItalic.woff2") format("woff2"),
+    url("../fonts/Nunito-BoldItalic.woff") format("woff");
   font-weight: 800;
   font-style: italic;
   font-display: swap;
@@ -47,8 +47,8 @@
 /* INTER FONT */
 @font-face {
   font-family: "Inter";
-  src: url("../../assets/fonts/Inter_24pt-Regular.woff2") format("woff2"),
-    url("../../assets/fonts/Inter_24pt-Regular.woff") format("woff");
+  src: url("../fonts/Inter_24pt-Regular.woff2") format("woff2"),
+    url("../fonts/Inter_24pt-Regular.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -56,8 +56,8 @@
 
 @font-face {
   font-family: "Inter";
-  src: url("../../assets/fonts/Inter_24pt-SemiBold.woff2") format("woff2"),
-    url("../../assets/fonts/Inter_24pt-SemiBold.woff") format("woff");
+  src: url("../fonts/Inter_24pt-SemiBold.woff2") format("woff2"),
+    url("../fonts/Inter_24pt-SemiBold.woff") format("woff");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -65,8 +65,8 @@
 
 @font-face {
   font-family: "Inter";
-  src: url("../../assets/fonts/Inter_28pt-Bold.woff2") format("woff2"),
-    url("../../assets/fonts/Inter_28pt-Bold.woff") format("woff");
+  src: url("../fonts/fonts/Inter_28pt-Bold.woff2") format("woff2"),
+    url("../fonts/Inter_28pt-Bold.woff") format("woff");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
@@ -107,6 +107,7 @@ body {
   box-shadow: var(--shadow-light);
   padding: 1rem 0;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  display: block;
 }
 
 .nav-container {
@@ -307,7 +308,7 @@ body {
   top: 80px;
   left: 0;
   bottom: 0;
-  background-image: url("../../assets/images/heroman.png");
+  background-image: url("../images/heroman.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center bottom; /* прижать к низу */
@@ -827,10 +828,9 @@ footer {
   }
 }
 
-/* Современные стили для формы #mars-once
-
-/* Контейнер формы */
-#mars-once {
+/* Контейнер форм */
+#mars-once,
+#mars-once-page {
   display: flex;
   flex-direction: column;
   gap: 2rem;
@@ -845,13 +845,15 @@ footer {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#mars-once:hover {
+#mars-once:hover,
+#mars-once-page:hover {
   box-shadow: var(--shadow-hover);
   transform: translateY(-4px);
 }
 
 /* Общие стили для label */
-#mars-once label {
+#mars-once label,
+#mars-once-page label {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -861,10 +863,13 @@ footer {
   cursor: pointer;
 }
 
-/* Стили для всех input, select, textarea */
+/* Стилы для input, select, textarea */
 #mars-once input,
 #mars-once select,
-#mars-once textarea {
+#mars-once textarea,
+#mars-once-page input,
+#mars-once-page select,
+#mars-once-page textarea {
   margin-top: 0.75rem;
   padding: 1.25rem 1.5rem;
   border: 2px solid transparent;
@@ -880,14 +885,19 @@ footer {
 }
 
 #mars-once input::placeholder,
-#mars-once textarea::placeholder {
+#mars-once textarea::placeholder,
+#mars-once-page input::placeholder,
+#mars-once-page textarea::placeholder {
   color: rgba(100, 116, 139, 0.6);
 }
 
-/* Фокус и hover состояния */
+/* Фокус и hover */
 #mars-once input:focus,
 #mars-once select:focus,
-#mars-once textarea:focus {
+#mars-once textarea:focus,
+#mars-once-page input:focus,
+#mars-once-page select:focus,
+#mars-once-page textarea:focus {
   border-color: #ff6a00;
   background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 0 0 4px rgba(255, 106, 0, 0.1), var(--shadow-light);
@@ -896,18 +906,23 @@ footer {
 
 #mars-once input:hover,
 #mars-once select:hover,
-#mars-once textarea:hover {
+#mars-once textarea:hover,
+#mars-once-page input:hover,
+#mars-once-page select:hover,
+#mars-once-page textarea:hover {
   background: rgba(255, 255, 255, 0.9);
   border-color: rgba(255, 106, 0, 0.2);
 }
 
 /* Специфичные стили */
-#mars-once input[type="tel"] {
+#mars-once input[type="tel"],
+#mars-once-page input[type="tel"] {
   font-family: "SF Mono", "Roboto Mono", monospace;
   letter-spacing: 0.05em;
 }
 
-#mars-once select {
+#mars-once select,
+#mars-once-page select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
   background-position: right 1rem center;
@@ -917,13 +932,15 @@ footer {
   cursor: pointer;
 }
 
-#mars-once textarea {
+#mars-once textarea,
+#mars-once-page textarea {
   resize: vertical;
   min-height: 120px;
 }
 
 /* Кастомный чекбокс */
-#mars-once label:last-of-type {
+#mars-once label:last-of-type,
+#mars-once-page label:last-of-type {
   flex-direction: row;
   align-items: flex-start;
   gap: 0.75rem;
@@ -931,11 +948,13 @@ footer {
   font-weight: 500;
 }
 
-#mars-once input[type="checkbox"] {
+#mars-once input[type="checkbox"],
+#mars-once-page input[type="checkbox"] {
   display: none;
 }
 
-#mars-once .checkmark {
+#mars-once .checkmark,
+#mars-once-page .checkmark {
   width: 22px;
   height: 22px;
   border: 2px solid rgba(255, 106, 0, 0.3);
@@ -946,13 +965,15 @@ footer {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-#mars-once input[type="checkbox"]:checked + .checkmark {
+#mars-once input[type="checkbox"]:checked + .checkmark,
+#mars-once-page input[type="checkbox"]:checked + .checkmark {
   background: var(--primary-gradient);
   border-color: var(--primary-gradient);
   animation: checkmarkPulse 0.4s ease;
 }
 
-#mars-once input[type="checkbox"]:checked + .checkmark::after {
+#mars-once input[type="checkbox"]:checked + .checkmark::after,
+#mars-once-page input[type="checkbox"]:checked + .checkmark::after {
   content: "";
   position: absolute;
   left: 50%;
@@ -977,18 +998,21 @@ footer {
 }
 
 /* Ссылка в чекбоксе */
-#mars-once a {
+#mars-once a,
+#mars-once-page a {
   color: #ff6a00;
   text-decoration: none;
   font-weight: 600;
 }
 
-#mars-once a:hover {
+#mars-once a:hover,
+#mars-once-page a:hover {
   text-decoration: underline;
 }
 
 /* Кнопка отправки */
-#mars-once button {
+#mars-once button,
+#mars-once-page button {
   margin-top: 1rem;
   padding: 1.5rem 3rem;
   background: var(--primary-gradient);
@@ -1005,16 +1029,19 @@ footer {
   box-shadow: 0 8px 32px rgba(255, 106, 0, 0.4);
 }
 
-#mars-once button:hover {
+#mars-once button:hover,
+#mars-once-page button:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 16px 48px rgba(255, 106, 0, 0.5);
 }
 
-#mars-once button:active {
+#mars-once button:active,
+#mars-once-page button:active {
   transform: translateY(-2px) scale(1);
 }
 
-#mars-once button::before {
+#mars-once button::before,
+#mars-once-page button::before {
   content: "";
   position: absolute;
   top: 0;
@@ -1030,36 +1057,135 @@ footer {
   transition: left 0.6s;
 }
 
-#mars-once button:hover::before {
+#mars-once button:hover::before,
+#mars-once-page button:hover::before {
   left: 100%;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-  #mars-once {
+  #mars-once,
+  #mars-once-page {
     margin: 0 1rem;
     padding: 2.5rem 2rem;
   }
 
-  #mars-once label {
+  #mars-once label,
+  #mars-once-page label {
     font-size: 1rem;
   }
 
-  #mars-once button {
+  #mars-once button,
+  #mars-once-page button {
     padding: 1.25rem 2.5rem;
     font-size: 1.1rem;
   }
 }
 
 @media (max-width: 480px) {
-  #mars-once {
+  #mars-once,
+  #mars-once-page {
     padding: 2rem 1.5rem;
   }
 
   #mars-once input,
   #mars-once select,
-  #mars-once textarea {
+  #mars-once textarea,
+  #mars-once-page input,
+  #mars-once-page select,
+  #mars-once-page textarea {
     padding: 1rem 1.25rem;
     font-size: 0.95rem;
   }
+}
+
+/* Форма и сообщения */
+.contact-form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-success,
+.form-error {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10000;
+  padding: 2rem 2.5rem;
+  border-radius: 16px;
+  font-size: 1rem;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(10px);
+  min-width: 320px;
+  max-width: 400px;
+}
+
+.form-success {
+  background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+  border: 2px solid #10b981;
+  color: #065f46;
+}
+
+.form-error {
+  background: linear-gradient(135deg, #fef2f2 0%, #fecaca 100%);
+  border: 2px solid #ef4444;
+  color: #991b1b;
+}
+
+.form-success i,
+.form-error i {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.form-success h3,
+.form-error h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.form-success p,
+.form-error p {
+  margin: 0;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+/* Анимация появления */
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -60%) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.form-success.show,
+.form-error.show {
+  display: block;
+  animation: fadeInScale 0.3s ease-out;
+}
+
+/* Затемнение фона при показе сообщения */
+body.modal-open {
+  overflow: hidden;
+}
+
+body.modal-open::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
 }
