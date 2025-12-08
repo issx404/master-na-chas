@@ -1,49 +1,3 @@
-@font-face {
-  font-family: "Nunito";
-  src: url("../fonts/Nunito-Regular.woff2") format("woff2"),
-    url("../fonts/Nunito-Regular.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap; /* очень важно — шрифт не блокирует рендер */
-}
-
-@font-face {
-  font-family: "Nunito";
-  src: url("../fonts/Nunito-SemiBold.woff2") format("woff2"),
-    url("../fonts/Nunito-SemiBold.woff") format("woff");
-  font-weight: 600;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Nunito";
-  src: url("../fonts/Nunito-Bold.woff2") format("woff2"),
-    url("../fonts/Nunito-Bold.woff") format("woff");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-
-/* Italic */
-@font-face {
-  font-family: "Nunito";
-  src: url("../fonts/Nunito-Italic.woff2") format("woff2"),
-    url("../fonts/Nunito-Italic.woff") format("woff");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Nunito";
-  src: url("../fonts/Nunito-BoldItalic.woff2") format("woff2"),
-    url("../fonts/Nunito-BoldItalic.woff") format("woff");
-  font-weight: 800;
-  font-style: italic;
-  font-display: swap;
-}
-
 /* INTER FONT */
 @font-face {
   font-family: "Inter";
@@ -90,7 +44,8 @@
 }
 
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   line-height: 1.6;
   color: var(--text-dark);
   overflow-x: hidden;
@@ -120,6 +75,7 @@ body {
 }
 
 .logo {
+  color: rgb(255, 117, 43);
   font-size: 1.8rem;
   font-weight: 800;
   background: var(--primary-gradient);
@@ -251,13 +207,12 @@ body {
 
 /* HERO */
 .hero {
+  position: relative;
   min-height: 100vh;
   width: 100%;
-  overflow: hidden; /* на всякий случай, чтобы ничего не вылезало */
-  display: grid; /* грид-контейнер */
-  /* Будет создано 3 колонки */
+  overflow: hidden;
+  display: grid;
   grid-template-columns: [start] 1fr [line2] 2fr [line3] 1fr [end];
-  /* Будет создано 5 ряда */
   grid-template-rows: [row-start] 1fr [row-end];
   background: radial-gradient(
       circle at 20% 80%,
@@ -272,16 +227,17 @@ body {
     var(--secondary-gradient);
 }
 
+/* Мобильная версия: одна колонка, авто-строки, адекватные отступы */
 @media (max-width: 768px) {
   .hero {
     grid-template-columns: [start] 1fr [end];
-    grid-template-rows: [row-start] 1fr [row1] 1fr [row2] 1fr [row-end];
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
+    grid-template-rows: auto;
+    row-gap: 1.5rem;
+    padding: 5rem 1rem 3rem; /* немного внутреннего отступа, если нужно */
   }
 }
 
+/* Фоновые слои */
 .hero::before {
   content: "";
   position: absolute;
@@ -297,40 +253,35 @@ body {
       transparent 50%
     );
   animation: float 40s ease-in-out infinite;
+  z-index: 0;
 }
 
-/* НОВЫЙ ::after с изображением (средний слой) */
+/* heroman.png — только на планшетах/десктопах */
 .hero::after {
   content: "";
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   top: 80px;
-  left: 0;
-  bottom: 0;
   background-image: url("../images/heroman.png");
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center bottom; /* прижать к низу */
+  background-position: center bottom;
   opacity: 0.85;
   z-index: 0;
 }
 
+/* Полностью убираем картинку на мобилках */
 @media (max-width: 768px) {
   .hero::after {
-    position: absolute;
-    top: auto; /* убрать верхний отступ */
-    bottom: 0;
-    z-index: -1;
+    content: none;
+    background-image: none;
   }
 }
 
-@media (max-width: 1012px) {
+/* Чуть подправляем позицию на средних экранах */
+@media (max-width: 1012px) and (min-width: 769px) {
   .hero::after {
-    position: absolute;
-    top: 125px; /* убрать верхний отступ */
-    bottom: 0;
-    z-index: 0;
+    top: 125px;
   }
 }
 
@@ -344,20 +295,16 @@ body {
   }
 }
 
-.item {
-  /* border: 1px solid black; */
-}
-
+/* Всё содержимое поверх фонов */
 .hero > * {
   position: relative;
   z-index: 2;
 }
 
+/* ЦЕНТРАЛЬНЫЙ ЗАГОЛОВОК */
 .hero-title {
-  grid-column-start: line2;
-  grid-column-end: line3;
-  grid-row-start: row-start;
-  grid-row-end: row-end;
+  grid-column: line2 / line3;
+  grid-row: row-start / row-end;
   justify-self: center;
   align-self: center;
   text-align: center;
@@ -365,22 +312,11 @@ body {
 
 @media (max-width: 768px) {
   .hero-title {
-    grid-column-start: start;
-    grid-column-end: end;
-    grid-row-start: row-start;
-    grid-row-end: row1;
+    grid-column: start / end; /* одна колонка */
+    grid-row: auto; /* естественный поток */
     justify-self: center;
-    align-self: center;
     text-align: center;
   }
-}
-
-.hero-subtitle {
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
-  color: #fff;
-  margin-bottom: 3rem;
-  opacity: 0.95;
-  font-weight: 400;
 }
 
 .hero-title > h1 {
@@ -390,13 +326,22 @@ body {
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--glass-bg);
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
 }
 
+.hero-subtitle {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  color: #fff;
+  margin-bottom: 3rem;
+  opacity: 0.95;
+  font-weight: 400;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* ЛЕВЫЙ ТЕКСТ-БЭДЖ */
 .hero-lefttext {
-  grid-column-start: start;
-  grid-column-end: line2;
-  grid-row-start: row-start;
-  grid-row-end: row-end;
+  grid-column: start / line2;
+  grid-row: row-start / row-end;
   justify-self: center;
   align-self: center;
   padding: 1rem 2rem;
@@ -404,21 +349,17 @@ body {
 
 @media (max-width: 768px) {
   .hero-lefttext {
-    grid-column-start: start;
-    grid-column-end: end;
-    grid-row-start: row1;
-    grid-row-end: row2;
+    grid-column: start / end;
+    grid-row: auto;
     justify-self: center;
-    align-self: center;
     text-align: center;
   }
 }
 
+/* ПРАВЫЙ ТЕКСТ-БЭДЖ */
 .hero-righttext {
-  grid-column-start: line3;
-  grid-column-end: end;
-  grid-row-start: row-start;
-  grid-row-end: row-end;
+  grid-column: line3 / end;
+  grid-row: row-start / row-end;
   justify-self: center;
   align-self: center;
   padding: 1rem 2rem;
@@ -426,28 +367,16 @@ body {
 
 @media (max-width: 768px) {
   .hero-righttext {
-    grid-column-start: start;
-    grid-column-end: end;
-    grid-row-start: row2;
-    grid-row-end: row-end;
+    grid-column: start / end;
+    grid-row: auto;
     justify-self: center;
-    align-self: center;
     text-align: center;
   }
 }
 
-.hero-lefttext > span {
-  background: rgba(255, 255, 255, 0.2);
-  padding: 1rem 2rem;
-  border-radius: 50px;
-  backdrop-filter: blur(10px);
-  margin-bottom: 3rem;
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
-  text-align: center;
-  opacity: 0.95;
-  color: #fff;
-}
-
+/* Общие стили для бэйджей слева/справа */
+.diagnostic,
+.hero-lefttext > span,
 .hero-righttext > span {
   background: rgba(255, 255, 255, 0.2);
   padding: 1rem 2rem;
@@ -460,7 +389,12 @@ body {
   color: #fff;
 }
 
-.hero-lefttext span {
+.diagnostic {
+  background: rgba(255, 0, 0, 0.2);
+}
+
+.hero-lefttext span,
+.hero-righttext span {
   font-weight: 600;
   display: flex;
   flex-direction: row;
@@ -469,13 +403,11 @@ body {
   gap: 0.75rem;
 }
 
-.hero-righttext span {
-  font-weight: 600;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
+@media (max-width: 768px) {
+  .hero-lefttext span,
+  .hero-righttext span {
+    text-align: center;
+  }
 }
 
 .cta-buttons {
@@ -725,6 +657,9 @@ footer {
 
 /* MOBILE RESPONSIVE */
 @media (max-width: 1024px) {
+  .logo {
+    display: none;
+  }
   .submenu {
     min-width: 250px;
   }
@@ -762,8 +697,8 @@ footer {
   }
 
   .nav-link {
-    justify-content: space-between;
-    width: 100%;
+    justify-content: space-around;
+    /* width: 100%; */
     padding: 1.5rem;
   }
 
@@ -833,8 +768,8 @@ footer {
 #mars-once-page {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  max-width: 500px;
+  gap: 0.75rem;
+  max-width: 600px;
   margin: 0 auto;
   padding: 3rem;
   background: rgba(255, 255, 255, 0.95);
@@ -877,7 +812,8 @@ footer {
   background: rgba(248, 250, 252, 0.8);
   backdrop-filter: blur(12px);
   font-size: 1rem;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   font-weight: 500;
   color: var(--text-dark);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1021,7 +957,8 @@ footer {
   border-radius: 50px;
   font-size: 1.15rem;
   font-weight: 700;
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -1067,7 +1004,7 @@ footer {
   #mars-once,
   #mars-once-page {
     margin: 0 1rem;
-    padding: 2.5rem 2rem;
+    padding: 2.5rem 1.5rem;
   }
 
   #mars-once label,
@@ -1085,7 +1022,7 @@ footer {
 @media (max-width: 480px) {
   #mars-once,
   #mars-once-page {
-    padding: 2rem 1.5rem;
+    padding: 2rem 0.5rem;
   }
 
   #mars-once input,

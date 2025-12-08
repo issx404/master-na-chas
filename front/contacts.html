@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Контакты - Мастер на час | Якутск</title>
+    <link rel="stylesheet" href="./assets/css/modern-normalize.css" />
+    <link rel="stylesheet" href="./assets/css/main.css" />
+    <!-- Favicon (все браузеры) -->
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.png" />
+    <link rel="icon" type="image/png" href="./assets/images/favicon.png" />
+  </head>
+  <style>
+    /* Оверлей на весь экран */
+    #formOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 9999;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    /* Фон затемнённый */
+    .overlay-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      top: 0;
+      left: 0;
+    }
+
+    /* Контейнер формы поверх фона */
+    .overlay-content {
+      position: relative;
+      background: white;
+      padding: 0;
+      border-radius: 12px;
+      max-width: 580px;
+      width: 100%;
+      z-index: 1;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      max-height: 95vh;
+      overflow-y: auto;
+    }
+
+    #btnClose {
+      position: absolute;
+      top: 5px;
+      right: 0px;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+  <body>
+    <!-- ADVANCED STICKY NAVIGATION WITH SUBMENUS -->
+    <nav id="navbar" class="navbar">
+      <div class="nav-container">
+        <a href="/" class="logo">
+          <i class="fas fa-tools"></i>
+          Мастер на час
+        </a>
+        <ul class="nav-menu" id="navMenu">
+          <!-- <li class="nav-item">
+            <a href="/" class="nav-link"> <i class="fas fa-list"></i>Услуги </a>
+            <ul class="submenu">
+              <li>
+                <a href="/" class="submenu-link"
+                  ><i class="fas fa-plug"></i>Установка техники</a
+                >
+              </li>
+              <li>
+                <a href="/" class="submenu-link"
+                  ><i class="fas fa-wrench"></i>Мелкий ремонт</a
+                >
+              </li>
+              <li>
+                <a href="/" class="submenu-link"
+                  ><i class="fas fa-hammer"></i>Сборка мебели</a
+                >
+              </li>
+              <li>
+                <a href="/" class="submenu-link"
+                  ><i class="fas fa-lightbulb"></i>Электрика</a
+                >
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="/" class="nav-link"> <i class="fas fa-star"></i>Отзывы </a>
+          </li>
+          <li class="nav-item">
+            <a href="/" class="nav-link"> <i class="fas fa-tag"></i>Цены </a>
+            <ul class="submenu">
+              <li>
+                <a href="/" class="submenu-link"
+                  ><i class="fas fa-calculator"></i>Установка</a
+                >
+              </li>
+              <li>
+                <a href="/" class="submenu-link"
+                  ><i class="fas fa-tools"></i>Ремонт</a
+                >
+              </li>
+              <li>
+                <a href="/" class="submenu-link"
+                  ><i class="fas fa-couch"></i>Мебель</a
+                >
+              </li>
+            </ul>
+          </li> -->
+          <li class="nav-item">
+            <a href="/" class="nav-link active">
+              <i class="fas fa-list"></i>Главная страница
+            </a>
+          </li>
+        </ul>
+        <a href="#" id="btnCall" class="nav-link nav-cta">
+          <i class="fas fa-phone"></i>Вызвать
+        </a>
+        <div class="hamburger" id="hamburger">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Форма в оверлее -->
+    <section id="formOverlay" style="display: none">
+      <div class="overlay-bg"></div>
+      <div class="overlay-content">
+        <button id="btnClose" aria-label="Закрыть форму">×</button>
+        <!-- Сообщение успеха -->
+        <div class="form-success" id="formSuccess">
+          <i class="fas fa-check-circle"></i>
+          <h3>✅ Заявка принята!</h3>
+          <p>
+            Мастер перезвонит вам в течение 10 минут<br /><strong
+              >Спасибо за обращение!</strong
+            >
+          </p>
+        </div>
+
+        <!-- Сообщение об ошибке -->
+        <div class="form-error" id="formError">
+          <i class="fas fa-exclamation-triangle"></i>
+          <h3>❌ Ошибка отправки</h3>
+          <p>Попробуйте еще раз или позвоните напрямую</p>
+        </div>
+        <!-- форма -->
+        <form
+          id="mars-once"
+          action="/apply/"
+          method="POST"
+          class="contact-form"
+        >
+          <label>
+            Ваше имя:
+            <input
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Павел"
+              required
+            />
+          </label>
+
+          <label>
+            Адрес:
+            <input
+              type="text"
+              id="address"
+              name="address"
+              placeholder="Адрес (улица, дом)"
+            />
+          </label>
+
+          <label>
+            Телефон:
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              placeholder="+7 1234567890"
+              pattern="^\+?\d{10,15}$"
+              title="Введите номер телефона из 10-15 цифр, опционально с + в начале"
+              required
+            />
+          </label>
+
+          <label>
+            Причина:
+            <select name="specialization" required>
+              <option value="mebel" selected>Мебель</option>
+              <option value="kuhnya">Кухня</option>
+              <option value="vanna">Ванна</option>
+              <option value="drugoe">Другое</option>
+            </select>
+          </label>
+
+          <label>
+            Описание проблемы
+            <textarea
+              id="message"
+              name="message"
+              rows="5"
+              placeholder="Что нужно сделать? (сантехника, электрика, сборка мебели...)"
+            ></textarea>
+          </label>
+
+          <label>
+            <input type="checkbox" name="agree" required />
+            <span class="checkmark"></span>
+            Согласен с
+            <a href="#" target="_blank">условиями обработки данных</a>
+          </label>
+
+          <button type="submit">Отправить заявку</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- CONTACTS CONTENT -->
+    <main
+      class="container"
+      style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem"
+    >
+      <section id="contacts-main">
+        <div style="text-align: center; margin-bottom: 4rem">
+          <h1
+            style="
+              font-size: clamp(2.5rem, 5vw, 4rem);
+              margin-bottom: 1rem;
+              color: #1f2937;
+            "
+          >
+            <i
+              class="fas fa-phone"
+              style="color: #f59e0b; margin-right: 1rem"
+            ></i>
+            Контакты
+          </h1>
+          <p
+            style="
+              font-size: 1.2rem;
+              color: #6b7280;
+              max-width: 600px;
+              margin: 0 auto;
+            "
+          >
+            Свяжитесь с нами удобным способом. <br />
+            Работаем 7 дней в неделю!
+          </p>
+        </div>
+
+        <!-- Основная информация -->
+        <div
+          style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+          "
+        >
+          <!-- Телефон и быстрый вызов -->
+          <div
+            style="
+              background: #f8fafc;
+              padding: 2.5rem;
+              border-radius: 16px;
+              text-align: center;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            "
+          >
+            <div
+              style="
+                background: linear-gradient(135deg, #f59e0b, #ef4444);
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.5rem;
+                box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+              "
+            >
+              <i class="fas fa-phone" style="font-size: 2rem; color: white"></i>
+            </div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937">
+              По телефону
+            </h3>
+            <p
+              style="
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #1e40af;
+                margin-bottom: 1rem;
+                line-height: 1.2;
+              "
+            >
+              +7 (914) 230-55-07
+            </p>
+            <p style="color: #6b7280; margin-bottom: 1.5rem">
+              Звонки принимаем с 08:00 - 22:00
+            </p>
+            <a
+              href="#"
+              id="btnCallPhone"
+              class="nav-cta"
+              style="
+                display: inline-block;
+                padding: 1rem 2rem;
+                background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+                color: white;
+                text-decoration: none;
+                border-radius: 12px;
+                font-weight: 600;
+              "
+            >
+              <i class="fas fa-phone"></i> Вызвать мастера
+            </a>
+          </div>
+
+          <!-- WhatsApp/Telegram -->
+          <div
+            style="
+              background: #f8fafc;
+              padding: 2.5rem;
+              border-radius: 16px;
+              text-align: center;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            "
+          >
+            <div
+              style="
+                background: linear-gradient(135deg, #10b981, #059669);
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.5rem;
+                box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+              "
+            >
+              <i
+                class="fab fa-whatsapp"
+                style="font-size: 2rem; color: white"
+              ></i>
+            </div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937">
+              Мессенджеры
+            </h3>
+            <div style="margin-bottom: 1.5rem">
+              <p
+                style="
+                  font-size: 1.3rem;
+                  font-weight: 600;
+                  color: #059669;
+                  margin-bottom: 0.5rem;
+                "
+              >
+                WhatsApp / Telegram
+              </p>
+              <p style="font-size: 1.1rem; color: #6b7280">+7-914-230-55-07</p>
+            </div>
+            <a
+              href="https://wa.me/79142305507"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="
+                display: inline-block;
+                padding: 0.8rem 1.5rem;
+                background: #10b981;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 600;
+                margin-right: 0.5rem;
+              "
+            >
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+            <a
+              href="https://t.me/+79142305507"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="
+                display: inline-block;
+                margin-right: 0.5rem;
+                margin-top: 0.5rem;
+                padding: 0.8rem 1.5rem;
+                background: #229ed9;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+                font-weight: 600;
+              "
+            >
+              <i class="fab fa-telegram"></i> Telegram
+            </a>
+          </div>
+
+          <!-- Адрес и карта -->
+          <div
+            style="
+              background: #f8fafc;
+              padding: 2.5rem;
+              border-radius: 16px;
+              text-align: center;
+              box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            "
+          >
+            <div
+              style="
+                background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.5rem;
+                box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+              "
+            >
+              <i
+                class="fas fa-map-marker-alt"
+                style="font-size: 2rem; color: white"
+              ></i>
+            </div>
+            <h3 style="font-size: 1.5rem; margin-bottom: 1rem; color: #1f2937">
+              Адрес
+            </h3>
+            <p
+              style="
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: #1e40af;
+                margin-bottom: 1rem;
+                line-height: 1.4;
+              "
+            >
+              г. Якутск, 9 бокс Гимеин м-н, Сайсарский округ, 677010<br />
+              <span style="font-weight: 400; font-size: 1rem; color: #6b7280"
+                >Офис и выезд мастеров</span
+              >
+            </p>
+            <a
+              href="https://2gis.ru/yakutsk/search/%D0%BC%D0%B0%D1%81%D1%82%D0%B5%D1%80%20%D0%BD%D0%B0%20%D1%87%D0%B0%D1%81/firm/70000001096894140/129.676543%2C62.010113?m=129.676562%2C62.010114%2F18"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="
+                display: inline-block;
+                padding: 1rem 2rem;
+                background: linear-gradient(135deg, #ec4899, #db2777);
+                color: white;
+                text-decoration: none;
+                border-radius: 12px;
+                font-weight: 600;
+              "
+            >
+              <i class="fas fa-map"></i> Показать на карте
+            </a>
+          </div>
+        </div>
+
+        <!-- Режим работы и график -->
+        <div
+          style="
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            padding: 3rem;
+            border-radius: 20px;
+            margin-bottom: 4rem;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(251, 191, 36, 0.2);
+          "
+        >
+          <h2 style="font-size: 2rem; margin-bottom: 1rem; color: #92400e">
+            <i
+              class="fas fa-clock"
+              style="margin-right: 1rem; color: #f59e0b"
+            ></i>
+            Режим работы
+          </h2>
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+              gap: 1rem;
+              max-width: 600px;
+              margin: 0 auto;
+            "
+          >
+            <div>
+              <strong style="color: #dc2626">Ежедневно:</strong> 08:00 - 22:00
+            </div>
+            <div><strong style="color: #7c2d12">Выезд:</strong> 30 минут</div>
+            <div><strong style="color: #1e40af">Срочный:</strong> 15 минут</div>
+          </div>
+        </div>
+
+        <!-- Быстрая заявка -->
+        <div
+          style="
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+          "
+        >
+          <h2 style="font-size: 2rem; margin-bottom: 1rem; color: #1f2937">
+            <i
+              class="fas fa-bolt"
+              style="color: #f59e0b; margin-right: 1rem"
+            ></i>
+            Быстрая заявка
+          </h2>
+          <p style="color: #6b7280; font-size: 1.1rem; margin-bottom: 2rem">
+            Оставьте номер — перезвоним за 5 минут!
+          </p>
+          <div
+            style="
+              display: flex;
+              gap: 1rem;
+              max-width: 400px;
+              margin: 0 auto;
+              flex-wrap: wrap;
+            "
+          >
+            <input
+              type="tel"
+              id="quickPhone"
+              placeholder="+7 (___) ___-__-__"
+              style="
+                flex: 1;
+                padding: 1rem;
+                border: 2px solid #e5e7eb;
+                border-radius: 12px;
+                font-size: 1.1rem;
+                outline: none;
+                min-width: 200px;
+              "
+            />
+            <button
+              onclick="quickApply()"
+              style="
+                padding: 1rem 2rem;
+                background: linear-gradient(135deg, #10b981, #059669);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 1.1rem;
+                font-weight: 600;
+                cursor: pointer;
+                white-space: nowrap;
+              "
+            >
+              <i class="fas fa-phone"></i> Перезвонить
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="container">
+        <p style="opacity: 0.8; margin-bottom: 1rem">
+          &copy; 2025 Мастер на час - Служба бытового сервиса<br />
+          Якутск • Все права защищены
+        </p>
+        <p style="opacity: 0.6; font-size: 0.9rem">
+          Мы в
+          <a
+            href="https://2gis.ru/yakutsk/firm/70000001096894140"
+            target="_blank"
+            rel="noopener noreferrer"
+            style="color: #3b82f6; text-decoration: underline"
+          >
+            2ГИС
+          </a>
+          • Выезд по всему городу
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      // Быстрый звонок - ПЕРЕЗВОН
+      function quickCall() {
+        const phone = document.getElementById("quickPhone").value.trim();
+        if (phone) {
+          // Заполняем форму и показываем оверлей
+          document.getElementById("phone").value = phone;
+          document.getElementById("name").value = "Клиент из контактов";
+          document.getElementById("formOverlay").style.display = "flex";
+        } else {
+          alert("Введите номер телефона");
+        }
+      }
+
+      // ✅ НОВОЕ: Отправка быстрой заявки (только номер)
+      async function quickApply() {
+        const phone = document.getElementById("quickPhone").value.trim();
+
+        if (!phone) {
+          alert("Введите номер телефона");
+          return;
+        }
+
+        // Показываем "загрузку"
+        const btn = document.querySelector("#quickPhone + button");
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправляем...';
+        btn.disabled = true;
+
+        try {
+          const response = await fetch("/apply/", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+              phone: phone,
+              name: "Клиент из контактов (быстрая заявка)",
+              specialization: "quick-call",
+              agree: "1",
+            }),
+          });
+
+          if (response.ok) {
+            // Успех - показываем сообщение в оверлее
+            document.getElementById("formOverlay").style.display = "flex";
+            document.getElementById("mars-once").style.display = "none";
+            document.getElementById("formSuccess").style.display = "block";
+            document.getElementById("formSuccess").innerHTML = `
+          <i class="fas fa-check-circle"></i>
+          <h3>✅ Перезвоним через 2 минуты!</h3>
+          <p>Номер: <strong>${phone}</strong><br/>Мастер перезвонит вам сейчас!</p>
+        `;
+          } else {
+            throw new Error("Ошибка сервера");
+          }
+        } catch (error) {
+          alert("Ошибка отправки. Попробуйте позвонить: +7 (914) 230-55-07");
+        } finally {
+          // Возвращаем кнопку
+          btn.innerHTML = originalText;
+          btn.disabled = false;
+        }
+      }
+
+      // Mobile menu toggle with accordion submenus
+      const hamburger = document.getElementById("hamburger");
+      const navMenu = document.getElementById("navMenu");
+      const navItems = document.querySelectorAll(".nav-item");
+
+      hamburger.addEventListener("click", () => {
+        navMenu.classList.toggle("active");
+        hamburger.classList.toggle("active");
+      });
+
+      // Mobile accordion functionality
+      navItems.forEach((item) => {
+        const link = item.querySelector(".nav-link");
+        const submenu = item.querySelector(".submenu");
+
+        if (submenu) {
+          link.addEventListener("click", (e) => {
+            if (window.innerWidth <= 768) {
+              e.preventDefault();
+              item.classList.toggle("active");
+            }
+          });
+        }
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener("click", (e) => {
+        if (!navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+          navMenu.classList.remove("active");
+        }
+      });
+
+      // Smooth scrolling
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+            if (window.innerWidth <= 768) {
+              navMenu.classList.remove("active");
+            }
+          }
+        });
+      });
+
+      // Navbar scroll effect
+      window.addEventListener("scroll", () => {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 100) {
+          navbar.style.background = "rgba(255, 255, 255, 0.98)";
+          navbar.style.boxShadow = "0 10px 40px rgba(0, 0, 0, 0.15)";
+        } else {
+          navbar.style.background = "rgba(255, 255, 255, 0.92)";
+          navbar.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.12)";
+        }
+      });
+
+      // Кнопки вызова формы
+      document.getElementById("btnCall").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("formOverlay").style.display = "flex";
+      });
+
+      document.getElementById("btnCallPhone").addEventListener("click", (e) => {
+        e.preventDefault();
+        document.getElementById("formOverlay").style.display = "flex";
+      });
+
+      // Закрытие формы
+      document.getElementById("btnClose").addEventListener("click", () => {
+        document.getElementById("formOverlay").style.display = "none";
+      });
+
+      // Закрытие по фону
+      document.querySelector(".overlay-bg").addEventListener("click", () => {
+        document.getElementById("formOverlay").style.display = "none";
+      });
+    </script>
+    <script
+      src="https://kit.fontawesome.com/3ad00e6e45.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="main.js"></script>
+  </body>
+</html>

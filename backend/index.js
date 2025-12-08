@@ -8,17 +8,15 @@ dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-// Для использования verbose-режима нужно немного иначе:
 const { verbose } = sqlite3;
 const sqlite = verbose();
 const db = new sqlite.Database("database.db");
 
-app.use(express.json()); // обязательно, чтобы читать JSON из body
-// указываем папку с фронтендом как статическую для css и js
+app.use(express.json());
 app.use(express.static(path.resolve("../front/")));
 app.use(express.urlencoded({ extended: true }));
 
-// Создаем таблицу, если не существует
+// ✅ Создаем таблицу с новым полем status
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS applications (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,14 +26,27 @@ db.serialize(() => {
     specialization TEXT,
     message TEXT,
     agree INTEGER,
-    created_at TEXT
+    created_at TEXT,
+    status TEXT DEFAULT 'active'  -- ✅ Новое поле!
   )`);
+
+  // ✅ Добавляем поле status к существующим записям (один раз выполнится)
+  db.run(
+    `ALTER TABLE applications ADD COLUMN status TEXT DEFAULT 'active'`,
+    (err) => {
+      if (err && !err.message.includes("duplicate column name")) {
+        console.log(
+          "Поле status уже существует или другая ошибка:",
+          err.message
+        );
+      }
+    }
+  );
 });
 
 app.post("/apply", (req, res) => {
   const { name, address, phone, specialization, message, agree } = req.body;
 
-  // 1. Берем текущее время и приводим к Asia/Yakutsk
   const now = new Date();
   const formatter = new Intl.DateTimeFormat("ru-RU", {
     timeZone: "Asia/Yakutsk",
@@ -58,12 +69,11 @@ app.post("/apply", (req, res) => {
   const minute = get("minute");
   const second = get("second");
 
-  // 2. Формат DD-MM-YYYY HH:MM:SS
   const createdAt = `${day}-${month}-${year} ${hour}:${minute}:${second}`;
 
   const stmt = db.prepare(`INSERT INTO applications 
-    (name, address, phone, specialization, message, agree, created_at)
-    VALUES (?, ?, ?, ?, ?, ?, ?)`);
+    (name, address, phone, specialization, message, agree, created_at, status)
+    VALUES (?, ?, ?, ?, ?, ?, ?, 'active')`); // ✅ status = 'active' по умолчанию
 
   stmt.run(
     name,
@@ -94,18 +104,44 @@ app.get("/zayavki", auth, (req, res) => {
   res.sendFile(path.resolve("../front/zayavki.html"));
 });
 
+// ✅ Обновленный GET - возвращает ВСЕ заявки со статусом
 app.get("/api/applications", (req, res) => {
-  db.all("SELECT * FROM applications", [], (err, rows) => {
+  db.all("SELECT * FROM applications ORDER BY created_at DESC", (err, rows) => {
     if (err) {
       res.status(500).json({ error: err.message });
       return;
     }
-    res.json(rows); // отправляет массив записей в JSON
+    res.json(rows);
   });
 });
 
+// ✅ НОВЫЙ! Отметить заявку как выполненную
+app.patch("/api/applications/:id/complete", auth, (req, res) => {
+  const id = parseInt(req.params.id);
+
+  db.run(
+    "UPDATE applications SET status = 'completed' WHERE id = ? AND status = 'active'",
+    [id],
+    function (err) {
+      if (err) {
+        console.error(err);
+        res.status(500).json({ error: err.message });
+        return;
+      }
+
+      if (this.changes === 0) {
+        res.status(404).json({ error: "Активная заявка не найдена" });
+        return;
+      }
+
+      res.json({ success: true, message: "Заявка отмечена как выполненная" });
+    }
+  );
+});
+
+// ✅ Удаление (оставляем как есть, но с auth)
 app.delete("/api/applications/:id", auth, (req, res) => {
-  const id = parseInt(req.params.id); // ← добавь parseInt!
+  const id = parseInt(req.params.id);
   db.run("DELETE FROM applications WHERE id = ?", [id], function (err) {
     if (err) {
       console.error(err);
@@ -118,6 +154,10 @@ app.delete("/api/applications/:id", auth, (req, res) => {
     }
     res.json({ message: "Заявка удалена" });
   });
+});
+
+app.get("/contacts", (req, res) => {
+  res.sendFile(path.resolve("../front/contacts.html"));
 });
 
 app.listen(PORT, "localhost", () => {

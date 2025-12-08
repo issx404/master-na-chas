@@ -2,61 +2,306 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Заявки</title>
-    <link rel="stylesheet" href="./assets/css/main.css" />
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.png" />
+    <link rel="icon" type="image/png" href="./assets/images/favicon.png" />
     <style>
-      /* твои стили без изменений */
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
           sans-serif;
         background: #f5f5f7;
         margin: 0;
-        padding: 20px;
+        padding: 16px;
+        line-height: 1.5;
       }
+
       .page {
         max-width: 1200px;
         margin: 0 auto;
       }
+
+      .header-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 24px;
+        padding-bottom: 16px;
+        border-bottom: 2px solid #e5e7eb;
+      }
+
       .page__title {
-        margin: 0 0 20px;
-        font-size: 28px;
+        margin: 0;
+        font-size: clamp(20px, 5vw, 28px);
         font-weight: 600;
         color: #111827;
       }
+
+      .back-link {
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 16px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: rgba(59, 130, 246, 0.1);
+        transition: all 0.2s;
+      }
+
+      .back-link:hover {
+        background: rgba(59, 130, 246, 0.2);
+      }
+
       .card {
         background: #ffffff;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
-        padding: 20px 24px;
-        overflow-x: auto;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(15, 23, 42, 0.08);
+        padding: 20px;
+        margin-bottom: 20px;
+        overflow: hidden;
       }
-      .table {
-        width: 100%;
-        border-collapse: collapse;
-        min-width: 900px;
-      }
-      .table thead {
-        background: #f3f4f6;
-      }
-      .table th,
-      .table td {
-        padding: 10px 12px;
-        text-align: left;
-        font-size: 14px;
-        border-bottom: 1px solid #e5e7eb;
-        vertical-align: top;
-      }
-      .table th {
+
+      .section-title {
+        margin: 0 0 20px 0;
+        font-size: clamp(18px, 4vw, 22px);
         font-weight: 600;
+        color: #111827;
+      }
+
+      /* ✅ МОБИЛЬНЫЕ КАРТОЧКИ (до 1024px) */
+      .application-card {
+        display: none; /* Скрыты на десктопе */
+      }
+
+      @media (max-width: 1023px) {
+        .application-card {
+          display: block;
+        }
+        .table-container {
+          display: none;
+        }
+      }
+
+      /* ✅ ДЕСКТОПНАЯ ТАБЛИЦА (от 1024px) */
+      @media (min-width: 1024px) {
+        body {
+          padding: 24px;
+        }
+
+        .table-container {
+          display: block;
+        }
+
+        .application-card {
+          display: none;
+        }
+
+        .table {
+          width: 100%;
+          border-collapse: collapse;
+          min-width: 1000px;
+        }
+
+        .table thead {
+          background: #f3f4f6;
+        }
+
+        .table th,
+        .table td {
+          padding: 12px 16px;
+          text-align: left;
+          font-size: 14px;
+          border-bottom: 1px solid #e5e7eb;
+          vertical-align: top;
+        }
+
+        .table th {
+          font-weight: 600;
+          color: #374151;
+          white-space: nowrap;
+          position: sticky;
+          top: 0;
+          background: #f3f4f6;
+        }
+
+        .table tbody tr:nth-child(even) {
+          background: #fafafa;
+        }
+
+        .table tbody tr:hover {
+          background: #eef2ff;
+        }
+
+        .table-container {
+          overflow-x: auto;
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .message {
+          max-width: 320px;
+          white-space: pre-wrap;
+          word-wrap: break-word;
+          color: #111827;
+          max-height: 100px;
+          overflow: hidden;
+        }
+      }
+
+      /* ✅ МОБИЛЬНЫЕ СТИЛИ КАРТОЧЕК (остаются прежними) */
+      .application-card {
+        background: #fafafa;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 12px;
+        border-left: 4px solid #10b981;
+        transition: all 0.2s;
+        position: relative;
+      }
+
+      .application-card:hover {
+        background: #f0f9ff;
+        transform: translateX(4px);
+      }
+
+      .application-card.completed {
+        border-left-color: #6b7280;
+      }
+
+      .app-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 12px;
+        gap: 12px;
+      }
+
+      .app-id {
+        font-size: 14px;
+        font-weight: 700;
         color: #374151;
+        background: rgba(59, 130, 246, 0.1);
+        padding: 4px 8px;
+        border-radius: 6px;
+      }
+
+      .app-time {
+        font-size: 12px;
+        color: #6b7280;
         white-space: nowrap;
       }
-      .table tbody tr:nth-child(even) {
-        background: #fafafa;
+
+      .app-client {
+        font-weight: 600;
+        color: #111827;
+        margin-bottom: 4px;
+        font-size: 16px;
       }
-      .table tbody tr:hover {
-        background: #eef2ff;
+
+      .app-phone {
+        font-size: 14px;
+        color: #6b7280;
+        word-break: break-all;
       }
+
+      .app-details {
+        display: grid;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: 14px;
+      }
+
+      .detail-label {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .detail-value {
+        color: #111827;
+        font-weight: 500;
+      }
+
+      .message {
+        background: white;
+        padding: 12px;
+        border-radius: 8px;
+        border-left: 3px solid #3b82f6;
+        font-size: 14px;
+        line-height: 1.4;
+        color: #374151;
+        max-height: 80px;
+        overflow: hidden;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .agree-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .agree-yes {
+        background: #dcfce7;
+        color: #166534;
+      }
+
+      .agree-no {
+        background: #fee2e2;
+        color: #b91c1c;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        flex: 1;
+        min-width: 100px;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+      }
+
+      .complete-btn {
+        background: #10b981;
+        color: white;
+      }
+
+      .complete-btn:hover {
+        background: #059669;
+        transform: translateY(-1px);
+      }
+
+      .delete-btn {
+        background: #ef4444;
+        color: white;
+      }
+
+      .delete-btn:hover {
+        background: #dc2626;
+        transform: translateY(-1px);
+      }
+
       .badge {
         display: inline-flex;
         align-items: center;
@@ -65,166 +310,276 @@
         font-size: 12px;
         font-weight: 500;
       }
+
       .badge--yes {
         background: #dcfce7;
         color: #166534;
       }
+
       .badge--no {
         background: #fee2e2;
         color: #b91c1c;
       }
-      .message {
-        max-width: 320px;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        color: #111827;
-      }
-      .muted {
-        color: #6b7280;
-        font-size: 13px;
-      }
+
       .empty {
-        padding: 16px 0;
+        padding: 40px 20px;
         color: #6b7280;
-        font-size: 14px;
+        font-size: 16px;
+        text-align: center;
+        background: rgba(0, 0, 0, 0.02);
+        border-radius: 12px;
       }
 
-      /* Стили для кнопки удаления */
-      .delete-btn {
-        background: #ef4444;
-        color: white;
-        border: none;
-        padding: 6px 12px;
-        border-radius: 6px;
-        font-size: 12px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
+      .loading {
+        text-align: center;
+        padding: 40px;
+        color: #6b7280;
       }
-      .delete-btn:hover {
-        background: #dc2626;
-        transform: translateY(-1px);
+
+      .spinner {
+        border: 3px solid #e5e7eb;
+        border-top: 3px solid #3b82f6;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 16px;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
     </style>
   </head>
   <body>
     <div class="page">
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-        "
-      >
+      <div class="header-row">
         <h1 class="page__title">Заявки</h1>
-        <a
-          href="/"
-          style="color: #3b82f6; text-decoration: none; font-weight: 500"
-          >← На сайт</a
-        >
+        <a href="/" class="back-link">← На сайт</a>
       </div>
+
+      <!-- АКТИВНЫЕ -->
       <div class="card">
-        <div id="applications"></div>
+        <h2 class="section-title">Активные заявки</h2>
+        <div id="activeApplications">
+          <div class="loading">
+            <div class="spinner"></div>
+            Загружаем...
+          </div>
+        </div>
+      </div>
+
+      <!-- ВЫПОЛНЕННЫЕ -->
+      <div class="card">
+        <h2 class="section-title">Выполненные заявки</h2>
+        <div id="completedApplications">
+          <div class="loading">
+            <div class="spinner"></div>
+            Загружаем...
+          </div>
+        </div>
       </div>
     </div>
 
     <script type="module">
-      const container = document.getElementById("applications");
+      const activeContainer = document.getElementById("activeApplications");
+      const completedContainer = document.getElementById(
+        "completedApplications"
+      );
 
       async function loadApplications() {
         try {
           const res = await fetch("/api/applications");
-          if (!res.ok) throw new Error("Ошибка загрузки заявок");
+          if (!res.ok) throw new Error("Ошибка загрузки");
 
           const data = await res.json();
+          const active = data.filter((a) => a.status === "active" || !a.status);
+          const completed = data.filter((a) => a.status === "completed");
 
-          if (!data.length) {
-            container.innerHTML =
-              '<div class="empty">Пока нет ни одной заявки.</div>';
-            return;
-          }
+          renderContent(activeContainer, active, { showComplete: true });
+          renderContent(completedContainer, completed, { showComplete: false });
 
-          const rows = data
-            .map((app) => {
-              const agreeBadge = app.agree
-                ? '<span class="badge badge--yes">Да</span>'
-                : '<span class="badge badge--no">Нет</span>';
+          attachHandlers();
+        } catch (err) {
+          console.error(err);
+          activeContainer.innerHTML =
+            '<div class="empty">❌ Ошибка загрузки. Обновите страницу.</div>';
+          completedContainer.innerHTML =
+            '<div class="empty">❌ Ошибка загрузки. Обновите страницу.</div>';
+        }
+      }
 
-              const safeMessage = app.message || "—";
-              const safeSpecialization = app.specialization || "—";
-              const safeAddress = app.address || "—";
-              const safePhone = app.phone || "—";
-              const safeCreatedAt = app.created_at || "—";
+      // ✅ ГИБРИДНЫЙ РЕНДЕР: карточки ИЛИ таблица
+      function renderContent(container, items, options = {}) {
+        if (!items.length) {
+          container.innerHTML = '<div class="empty">📭 Пока нет заявок</div>';
+          return;
+        }
 
-              return `
-            <tr>
+        // Мобильные карточки
+        const cards = items
+          .map((app) => {
+            const agreeBadge = app.agree
+              ? '<span class="agree-badge agree-yes">✓ Да</span>'
+              : '<span class="agree-badge agree-no">✗ Нет</span>';
+
+            const completeBtn = options.showComplete
+              ? `<button class="btn complete-btn" data-id="${app.id}">Выполнено ✓</button>`
+              : "";
+
+            const statusClass = app.status === "completed" ? "completed" : "";
+
+            return `
+            <div class="application-card ${statusClass}" data-id="${app.id}">
+              <div class="app-header">
+                <div class="app-id">#${app.id}</div>
+                <div class="app-time">${app.created_at || "—"}</div>
+              </div>
+              
+              <div class="app-client">${app.name}</div>
+              <div class="app-phone">${app.phone || "—"}</div>
+              
+              <div class="app-details">
+                <div class="detail-row">
+                  <span class="detail-label">Адрес:</span>
+                  <span class="detail-value">${app.address || "—"}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Услуга:</span>
+                  <span class="detail-value">${app.specialization || "—"}</span>
+                </div>
+                <div class="detail-row">
+                  <span class="detail-label">Согласие:</span>
+                  ${agreeBadge}
+                </div>
+              </div>
+              
+              ${app.message ? `<div class="message">${app.message}</div>` : ""}
+              
+              <div class="actions">
+                ${completeBtn}
+                <button class="btn delete-btn" data-id="${
+                  app.id
+                }">🗑 Удалить</button>
+              </div>
+            </div>
+          `;
+          })
+          .join("");
+
+        // ✅ ДЕСКТОПНАЯ ТАБЛИЦА
+        const tableRows = items
+          .map((app) => {
+            const agreeBadge = app.agree
+              ? '<span class="badge badge--yes">Да</span>'
+              : '<span class="badge badge--no">Нет</span>';
+
+            const completeBtn = options.showComplete
+              ? `<button class="complete-btn" data-id="${app.id}">Выполнено</button>`
+              : "";
+
+            return `
+            <tr data-id="${app.id}">
               <td>${app.id}</td>
               <td>
                 <div>${app.name}</div>
-                <div class="muted">${safePhone}</div>
+                <div style="color: #6b7280; font-size: 13px;">${
+                  app.phone || "—"
+                }</div>
               </td>
-              <td>${safeAddress}</td>
-              <td>${safeSpecialization}</td>
-              <td class="message">${safeMessage}</td>
+              <td>${app.address || "—"}</td>
+              <td>${app.specialization || "—"}</td>
+              <td class="message">${app.message || "—"}</td>
               <td>${agreeBadge}</td>
-              <td class="muted">${safeCreatedAt}</td>
+              <td style="color: #6b7280; font-size: 13px;">${
+                app.created_at || "—"
+              }</td>
               <td>
+                ${completeBtn}
                 <button class="delete-btn" data-id="${app.id}">Удалить</button>
               </td>
             </tr>
           `;
-            })
-            .join("");
+          })
+          .join("");
 
-          container.innerHTML = `
-          <table class="table">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Клиент</th>
-                <th>Адрес</th>
-                <th>Специализация</th>
-                <th>Комментарий</th>
-                <th>Согласие</th>
-                <th>Создано</th>
-                <th>Действия</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rows}
-            </tbody>
-          </table>
+        const table = `
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Клиент</th>
+                  <th>Адрес</th>
+                  <th>Специализация</th>
+                  <th>Комментарий</th>
+                  <th>Согласие</th>
+                  <th>Создано</th>
+                  <th>Действия</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tableRows}
+              </tbody>
+            </table>
+          </div>
         `;
 
-          // ✅ ПРИВЯЗЫВАЕМ ОБРАБОТЧИКИ ПОСЛЕ СОЗДАНИЯ КНОПОК
-          container.querySelectorAll(".delete-btn").forEach((btn) => {
-            btn.addEventListener("click", async () => {
-              const id = btn.dataset.id;
-              if (!confirm(`Удалить заявку #${id}?`)) return;
+        container.innerHTML = `
+          ${cards}
+          ${table}
+        `;
+      }
 
-              try {
-                const res = await fetch(`/api/applications/${id}`, {
-                  method: "DELETE",
-                });
-                if (!res.ok) {
-                  const error = await res.json();
-                  throw new Error(error.error || "Ошибка удаления");
-                }
-                loadApplications(); // Перезагружаем таблицу
-              } catch (err) {
-                alert("Ошибка при удалении: " + err.message);
-              }
-            });
+      function attachHandlers() {
+        // Удаление
+        document.querySelectorAll(".delete-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const id =
+              btn.closest(".application-card, tr")?.dataset.id ||
+              btn.dataset.id;
+            if (!confirm(`Удалить заявку #${id}?`)) return;
+
+            try {
+              const res = await fetch(`/api/applications/${id}`, {
+                method: "DELETE",
+              });
+              if (!res.ok) throw new Error(await res.text());
+              loadApplications();
+            } catch (err) {
+              alert("Ошибка: " + err.message);
+            }
           });
-        } catch (err) {
-          console.error(err);
-          container.innerHTML =
-            '<div class="empty">Ошибка при загрузке заявок. Попробуйте обновить страницу.</div>';
-        }
+        });
+
+        // Выполнено
+        document.querySelectorAll(".complete-btn").forEach((btn) => {
+          btn.addEventListener("click", async () => {
+            const id =
+              btn.closest(".application-card, tr")?.dataset.id ||
+              btn.dataset.id;
+            if (!confirm(`Отметить #${id} как выполненную?`)) return;
+
+            try {
+              const res = await fetch(`/api/applications/${id}/complete`, {
+                method: "PATCH",
+              });
+              if (!res.ok) throw new Error(await res.text());
+              loadApplications();
+            } catch (err) {
+              alert("Ошибка: " + err.message);
+            }
+          });
+        });
       }
 
       loadApplications();
+      setInterval(loadApplications, 30000);
     </script>
   </body>
 </html>

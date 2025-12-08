@@ -7,19 +7,97 @@
     <link rel="stylesheet" href="./assets/css/modern-normalize.css" />
 
     <link rel="stylesheet" href="./assets/css/main.css" />
+    <!-- Favicon (все браузеры) -->
+    <link rel="icon" type="image/x-icon" href="./assets/images/favicon.png" />
+    <link rel="icon" type="image/png" href="./assets/images/favicon.png" />
   </head>
   <style>
+    /* ✅ СТИЛИ ДЛЯ БАННЕРА */
+    .price-banner {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      padding: 1.5rem 2rem;
+      border-radius: 20px;
+      margin: 2rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .price-banner::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .price-icon {
+      font-size: 2.5rem;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+    .price-text {
+      flex: 1;
+    }
+
+    .price-highlight {
+      display: block;
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .price-subtitle {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 500;
+      opacity: 0.95;
+      margin-top: 0.25rem;
+    }
+
+    .price-badge {
+      font-size: 1.4rem;
+      padding: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ✅ АДАПТИВНОСТЬ */
+    @media (max-width: 768px) {
+      .price-banner {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+        padding: 1.5rem;
+        margin: 1.5rem 0;
+      }
+
+      .price-highlight {
+        font-size: 1.8rem !important;
+      }
+    }
     /* Оверлей на весь экран */
     #formOverlay {
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       z-index: 9999;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 1rem;
     }
 
     /* Фон затемнённый */
@@ -36,18 +114,20 @@
     .overlay-content {
       position: relative;
       background: white;
-      padding: 1.5rem;
+      padding: 0;
       border-radius: 12px;
-      max-width: 480px;
-      width: 90%;
+      max-width: 580px;
+      width: 100%;
       z-index: 1;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      max-height: 95vh; /* максимум 90% высоты экрана */
+      overflow-y: auto; /* скролл внутри формы при необходимости */
     }
 
     #btnClose {
       position: absolute;
-      top: 24px;
-      right: 2px;
+      top: 5px;
+      right: 0px;
       background: none;
       border: none;
       font-size: 1.5rem;
@@ -77,6 +157,11 @@
                 >
               </li>
               <li>
+                <a href="#santehnika" class="submenu-link"
+                  ><i class="fa solid fa-faucet-drip"></i>Сантехника</a
+                >
+              </li>
+              <li>
                 <a href="#furniture" class="submenu-link"
                   ><i class="fas fa-hammer"></i>Сборка мебели</a
                 >
@@ -93,7 +178,7 @@
               <i class="fas fa-star"></i>Отзывы
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#prices" class="nav-link">
               <i class="fas fa-tag"></i>Цены
             </a>
@@ -114,9 +199,9 @@
                 >
               </li>
             </ul>
-          </li>
+          </li> -->
           <li class="nav-item">
-            <a href="#contacts" class="nav-link">
+            <a href="/contacts" class="nav-link">
               <i class="fas fa-phone"></i>Контакты
             </a>
           </li>
@@ -154,7 +239,7 @@
           <h3>❌ Ошибка отправки</h3>
           <p>Попробуйте еще раз или позвоните напрямую</p>
         </div>
-        <!-- сюда вставляешь свою форму -->
+        <!-- форма -->
         <form
           id="mars-once"
           action="/apply/"
@@ -167,7 +252,7 @@
               type="text"
               name="name"
               id="name"
-              placeholder="Илон Маск"
+              placeholder="Павел"
               required
             />
           </label>
@@ -201,7 +286,7 @@
               <option value="mebel" selected>Мебель</option>
               <option value="kuhnya">Кухня</option>
               <option value="vanna">Ванна</option>
-              <option value="dver">Дверь</option>
+              <option value="drugoe">Другое</option>
             </select>
           </label>
 
@@ -230,15 +315,17 @@
     <!-- HERO SECTION -->
     <section class="hero">
       <div class="item hero-title">
-        <h1>Мастер на час в Якутске</h1>
-        <p class="hero-subtitle">Служба бытового сервиса⭐</p>
+        <h1 style="font-size: 3em">Мастер на час в Якутске</h1>
+        <p class="hero-subtitle" style="font-weight: 800">
+          СЛУЖБА БЫТОВОГО СЕРВИСА⭐
+        </p>
         <div class="cta-buttons">
           <a href="#mars-once-page" class="btn btn-primary">
             <i class="fas fa-phone"></i>
             Вызвать специалиста сейчас
           </a>
           <a
-            href="https://wa.me/7914230xxxx"
+            href="https://wa.me/79142305507"
             class="btn btn-secondary"
             target="_blank"
             rel="noopener"
@@ -246,23 +333,36 @@
             <i class="fab fa-whatsapp"></i>
             Написать в WhatsApp
           </a>
+          <a
+            href="https://t.me/+79142305507"
+            class="btn btn-secondary"
+            target="_blank"
+            rel="noopener"
+          >
+            <i class="fab fa-telegram"></i>
+            Написать в Telegram
+          </a>
+        </div>
+        <div class="diagnostic" style="font-weight: 800; margin-top: 1rem">
+          Диагностика и оценка работы по фото
         </div>
       </div>
       <div class="item hero-lefttext">
         <span><i class="fa-solid fa-clock"></i>Выезд за 30 мин.</span>
         <span
-          ><i class="fa-regular fa-face-grin-hearts"></i>100+ довольных
+          ><i class="fa-regular fa-face-grin-hearts"></i>+500 довольных
           клиентов</span
         >
         <span><i class="fa-solid fa-hammer"></i>Широкий спектр услуг</span>
       </div>
       <div class="item hero-righttext">
         <span
-          ><i class="fa-solid fa-door-open"></i>Ремонт и установка дверей</span
+          ><i class="fa-solid fa-door-open"></i>Ремонт ручек, установка
+          замков</span
         >
-        <span><i class="fa-solid fa-couch"></i>Ремонт мебели</span>
+        <span><i class="fa-solid fa-couch"></i>Мебель</span>
 
-        <span><i class="fa-solid fa-wrench"></i>Сантехника</span>
+        <span><i class="fa solid fa-faucet-drip"></i>Сантехника</span>
       </div>
     </section>
 
@@ -270,6 +370,23 @@
     <section class="section" id="services">
       <div class="container">
         <h2 class="section-title">Полный спектр услуг</h2>
+
+        <!-- ✅ НОВЫЙ БАННЕР С ЦЕНОЙ -->
+        <div class="price-banner">
+          <div class="price-icon">
+            <i class="fas fa-tools"></i>
+          </div>
+          <div class="price-text">
+            <span class="price-highlight"
+              >Опытные мастера с большим стажем, вызов от 1000₽</span
+            >
+            <span class="price-subtitle">с гарантией выполненных работ</span>
+          </div>
+          <div class="price-badge">
+            <i class="fas fa-check-circle"></i>
+          </div>
+        </div>
+
         <div class="services-grid">
           <div class="service-card" id="install">
             <div class="service-icon">
@@ -277,8 +394,8 @@
             </div>
             <h3>Установка техники</h3>
             <p>
-              Стиральные машины, посудомойки, кондиционеры, телевизоры. Полная
-              настройка и проверка.
+              Стиральные машины, посудомойки, духовые шкафы, варочные панели,
+              телевизоры. Полная настройка и проверка.
             </p>
           </div>
           <div class="service-card" id="repair">
@@ -287,8 +404,18 @@
             </div>
             <h3>Мелкий бытовой ремонт</h3>
             <p>
-              Краны, розетки, двери, окна, замки. Диагностика + ремонт за 1
-              визит.
+              Монтаж плинтуса, укладка порожков, установка карниза, навес
+              картин, зеркал
+            </p>
+          </div>
+          <div class="service-card" id="santehnika">
+            <div class="service-icon">
+              <i class="fa solid fa-faucet-drip"></i>
+            </div>
+            <h3>Сантехника</h3>
+            <p>
+              Устранение засора, протечки, установка унитаза, замена подводки,
+              смесителя. Обслуживание фильтров.
             </p>
           </div>
           <div class="service-card" id="furniture">
@@ -321,39 +448,135 @@
       style="background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%)"
     >
       <div class="container">
-        <h2 class="section-title">Отзывы клиентов (4.9/5 • 25 отзывов)</h2>
+        <h2 class="section-title">
+          Отзывы клиентов (5.0/5 • более 25 отзывов)
+        </h2>
+
+        <!-- ✅ CSS вынесен ВЕРХ в <head> или <style> -->
+        <style>
+          .review-card {
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+          }
+          .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+          }
+          .review-text {
+            flex: 1;
+            font-size: 1rem;
+            line-height: 1.5;
+            color: #374151;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 5; /* ✅ 5 строк */
+            -webkit-box-orient: vertical;
+            margin-bottom: 1rem;
+          }
+          .review-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #f3f4f6;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          }
+          .review-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-weight: 600;
+            color: #1f2937;
+          }
+        </style>
+
         <div
           style="
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
           "
         >
+          <!-- ✅ 1. Лилия -->
           <div class="review-card">
             <div class="review-text">
-              "Мастер приехал через 25 минут, починил кран и 2 розетки. Цены
-              адекватные, работал чисто. Рекомендую!"
+              Благодарю за качественную работу Евгения, который все сделал по
+              моей просьбе, собрал и установил шкаф для туалетной комнаты.
+              Быстро, спокойно, вежливо и приветливо ❤️ Буду обращаться к вам 🤗
             </div>
             <div class="review-author">
-              <i
-                class="fas fa-user-circle"
-                style="font-size: 2.5rem; color: #cbd5e1"
-              ></i>
-              Иван П.
+              <img
+                src="https://placehold.co/64x64"
+                alt="Лилия Левчикова"
+                class="review-avatar"
+                loading="lazy"
+              />
+              Лилия Левчикова
               <span style="color: #f59e0b; font-size: 1.2rem">★★★★★</span>
             </div>
           </div>
+
+          <!-- ✅ 2. Саргылана -->
           <div class="review-card">
             <div class="review-text">
-              "Собрали кухонный гарнитур за день. Все аккуратно, ничего не
-              сломали. Приятные цены!"
+              Спасибо мастеру Евгению🙌🏻 очень хорошо все сделал, засор устранил,
+              смеситель поменял на кухне, ручку двери отремонтировал, много еще
+              по мелочи👍🏻 И отлично консультирует, обращайтесь не пожалеете 🤗
             </div>
             <div class="review-author">
-              <i
-                class="fas fa-user-circle"
-                style="font-size: 2.5rem; color: #cbd5e1"
-              ></i>
-              Мария К.
+              <img
+                src="https://placehold.co/64x64"
+                alt="Саргылана Алексеева"
+                class="review-avatar"
+                loading="lazy"
+              />
+              Саргылана Алексеева
+              <span style="color: #f59e0b; font-size: 1.2rem">★★★★★</span>
+            </div>
+          </div>
+
+          <!-- ✅ 3. Виктория -->
+          <div class="review-card">
+            <div class="review-text">
+              Спасибо, мастеру Евгению за добросовестный труд, за дельные
+              советы. Он заменил низ моечного шкафа. Посмотрел, что у меня на
+              последнем издыхании подводка крана, могла нечаянно затопить
+              соседей. Поменял ее по размеру...
+            </div>
+            <div class="review-author">
+              <img
+                src="./assets/images/avatars/viktoriya.jpg"
+                alt="Виктория Иванова"
+                class="review-avatar"
+                loading="lazy"
+              />
+              Виктория Иванова
+              <span style="color: #f59e0b; font-size: 1.2rem">★★★★★</span>
+            </div>
+          </div>
+
+          <!-- ✅ 4. Лидия -->
+          <div class="review-card">
+            <div class="review-text">
+              Спасибо мастеру! Исправил сложную проблему в сливном бачке
+              скрытого монтажа. Мы довольны результатом!
+            </div>
+            <div class="review-author">
+              <img
+                src="https://placehold.co/64x64"
+                alt="Лидия Гаврильева"
+                class="review-avatar"
+                loading="lazy"
+              />
+              Лидия Гаврильева
               <span style="color: #f59e0b; font-size: 1.2rem">★★★★★</span>
             </div>
           </div>
@@ -405,14 +628,14 @@
             </div>
             <div>
               <a
-                href="tel:+7914230xxxx"
+                href="/"
                 style="
                   color: var(--text-dark);
                   font-weight: 700;
                   font-size: 1.3rem;
                 "
               >
-                +7 (914) 230-XX-XX
+                +7 (914) 230-55-07
               </a>
             </div>
           </div>
@@ -422,7 +645,7 @@
             </div>
             <div>
               <a
-                href="https://wa.me/7914230xxxx"
+                href="https://wa.me/79142305507"
                 style="
                   color: var(--text-dark);
                   font-weight: 700;
@@ -431,6 +654,24 @@
                 target="_blank"
               >
                 WhatsApp
+              </a>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fab fa-telegram"></i>
+            </div>
+            <div>
+              <a
+                href="https://t.me/+79142305507"
+                style="
+                  color: var(--text-dark);
+                  font-weight: 700;
+                  font-size: 1.3rem;
+                "
+                target="_blank"
+              >
+                Telegram
               </a>
             </div>
           </div>
@@ -469,7 +710,7 @@
               type="text"
               name="name"
               id="name"
-              placeholder="Илон Маск"
+              placeholder="Павел"
               required
             />
           </label>
@@ -503,7 +744,7 @@
               <option value="mebel" selected>Мебель</option>
               <option value="kuhnya">Кухня</option>
               <option value="vanna">Ванна</option>
-              <option value="dver">Дверь</option>
+              <option value="drugoe">Другое</option>
             </select>
           </label>
 
@@ -557,7 +798,7 @@
         <p style="opacity: 0.6; font-size: 0.9rem">
           Мы в
           <a
-            href="https://2gis.ru/yakutsk"
+            href="https://2gis.ru/yakutsk/firm/70000001096894140"
             target="_blank"
             rel="noopener noreferrer"
             style="color: #3b82f6; text-decoration: underline"
@@ -631,10 +872,8 @@
         }
       });
     </script>
-    <script
-      src="https://kit.fontawesome.com/3ad00e6e45.js"
-      crossorigin="anonymous"
-    ></script>
+
+    <script src="./assets/all.js"></script>
     <script src="main.js"></script>
   </body>
 </html>
